@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const serverless = require('serverless-http')
 const ejsMate = require('ejs-mate')
 const path = require('path')
 
@@ -8,6 +9,8 @@ app.engine('ejs',ejsMate);
 app.set('views', path.join(__dirname,'views'))
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/.netlify/functions/index', app)
+module.exports.handler = serverless(app)
 
 app.get("/", (req,res) =>{
     res.render('home')
